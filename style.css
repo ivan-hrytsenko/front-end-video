@@ -10,6 +10,7 @@ body {
 h1, h2, h3 {
     font-family: 'Arial Black', Impact, sans-serif;
     font-weight: bold;
+    scroll-margin-top: 95px;
 }
 
 h1 {
