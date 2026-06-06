@@ -29,7 +29,7 @@
     <p>Зйомка відео — це процес фіксації динамічного зображення. Творчий процес вимагає повної віддачі, де важливо <span class="keyword-highlight">зловити справжню емоцію</span> в кадрі та виставити правильну композицію.</p>
     
     <h3>Знімальний процес (клікніть для відкриття в повний розмір):</h3>
-    <a href="images/shooting.jpg" target="_blank">
+    <a href="images/shooting.jpg" target="_blank" onclick="alert('Увага! Ви залишаєте сторінку зйомки.'); return true;">
         <img src="images/shooting.jpg" width="368" height="134" alt="Знімальний процес" style="border: 3px solid #b37d14;">
     </a>
 
@@ -42,7 +42,7 @@
     <h3>Загальний план знімального майданчика:</h3>
     <p><img src="images/producers.jpg" alt="Майданчик оригінал"></p>
 
-    <p><a href="#start-shooting">Повернутися на початок сторінки зйомки</a></p>
+    <p><a href="#start-shooting" onclick="if (prompt('Введіть «Так» (з великої літери) для повернення на початок сторінки:') !== 'Так') return false;">Повернутися на початок сторінки зйомки</a></p>
 
     <footer id="dev-footer"></footer>
 </body>

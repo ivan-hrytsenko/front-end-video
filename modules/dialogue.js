@@ -73,6 +73,13 @@ function render() {
     `;
 };
 
+function logNodeValue() {
+    const target = box.querySelector('p, h3');
+    if (target && target.firstChild) {
+        console.log(target.firstChild.nodeValue);
+    }
+}
+
 function handleMouseClick(event) {
     if (event.target.classList.contains('ans')) {
             const idx = event.target.dataset.idx;
@@ -82,20 +89,23 @@ function handleMouseClick(event) {
             }
             step++;
             render();
+            logNodeValue();
             return;
     };
     switch (event.target.id) {
         case 'start':
             step = 0;
             render();
+            logNodeValue();
             break;
         case 'close':
-            box.style.display = 'none';
+            box.remove();
             break;
         case 'reset':
             step = 0;
             for (const key in scores) scores[key] = 0;
             render();
+            logNodeValue();
             break;
     }
 };
@@ -106,6 +116,7 @@ function initDialogue() {
 
     box.addEventListener('click', handleMouseClick) 
     render();
+    logNodeValue();
 };
 
 export { initDialogue };
