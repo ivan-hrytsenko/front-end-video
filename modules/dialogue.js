@@ -46,27 +46,57 @@ function render() {
             <button id="start">Так!</button>
             <button id="close">Ні, дякую</button>
         `;
-    } else if (step < questions.length) {
+        return;
+    };
+    if (step < questions.length) {
         const current = questions[step];
         let html = `<p>${current.q}</p>`;
         for (let i = 0; i < current.a.length; i++) {
             html += `<button class="ans" data-idx="${i}">${current.a[i].t}</button>`;
         }
         box.innerHTML = html;
-    } else {
-        let max = -1, winner = '';
-        for (const key in scores) {
-            if (scores[key] > max) {
-                max = scores[key];
-                winner = key;
-            }
+        return;
+    };
+
+    let max = -1, winner = '';
+    for (const key in scores) {
+        if (scores[key] > max) {
+            max = scores[key];
+            winner = key;
         }
-        box.innerHTML = `
-            <h3>Твій вердикт: ${results[winner][0]}</h3>
-            <p>${results[winner][1]}</p>
-            <button id="reset">Пройти знову</button>
-            <button id="close">Закрити</button>
-        `;
+    }
+    box.innerHTML = `
+        <h3>Твій вердикт: ${results[winner][0]}</h3>
+        <p>${results[winner][1]}</p>
+        <button id="reset">Пройти знову</button>
+        <button id="close">Закрити</button>
+    `;
+};
+
+function handleMouseClick(event) {
+    if (event.target.classList.contains('ans')) {
+            const idx = event.target.dataset.idx;
+            const points = questions[step].a[idx].p;
+            for (const key in points) {
+                scores[key] += points[key];
+            }
+            step++;
+            render();
+            return;
+    };
+    switch (event.target.id) {
+        case 'start':
+            step = 0;
+            render();
+            break;
+        case 'close':
+            box.style.display = 'none';
+            break;
+        case 'reset':
+            step = 0;
+            for (const key in scores) scores[key] = 0;
+            render();
+            break;
     }
 };
 
@@ -74,27 +104,7 @@ function initDialogue() {
     box = document.getElementById('dialogue-box');
     if (!box) return;
 
-    box.addEventListener('click', (e) => {
-        if (e.target.id === 'start') {
-            step = 0;
-            render();
-        } else if (e.target.id === 'close') {
-            box.style.display = 'none';
-        } else if (e.target.classList.contains('ans')) {
-            const idx = e.target.dataset.idx;
-            const points = questions[step].a[idx].p;
-            for (const key in points) {
-                scores[key] += points[key];
-            }
-            step++;
-            render();
-        } else if (e.target.id === 'reset') {
-            step = 0;
-            for (const key in scores) scores[key] = 0;
-            render();
-        }
-    });
-
+    box.addEventListener('click', handleMouseClick) 
     render();
 };
 
