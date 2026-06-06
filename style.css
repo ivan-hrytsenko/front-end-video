@@ -162,3 +162,18 @@ span.keyword-highlight {
     font-weight: bold;
     padding: 0px 4px;
 }
+
+footer#dev-footer {
+    background-color: #b37d14;
+    border-top: 3px solid #734e06;
+    color:#ffffff;
+    font-weight: bold;
+    margin: 50px -20px -20px -20px;
+    padding: 0px 20px 20px 20px;
+    min-height: 60px;
+}
+
+footer#dev-footer a {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
