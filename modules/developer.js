@@ -14,6 +14,6 @@ function showDeveloperInfo(lastName, firstName, position = "Студент") {
     };
 
     footer.append(infoText, githubLink);
-}
+};
 
 export { showDeveloperInfo };
