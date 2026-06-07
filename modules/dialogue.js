@@ -37,14 +37,44 @@ const results = {
     kdenlive: ["Kdenlive", "Потужний безкоштовний софт із відкритим кодом. Найкращий вибір для Linux."]
 };
 
+const menuActions = {
+    start() {
+        step = 0;
+        render();
+        logNodeValue();
+    },
+    close() {
+        box.removeEventListener('click', handleMouseClick); // Видаляємо функцію-обробник
+        box.removeEventListener('click', analyticsHandler);  // Видаляємо об'єкт-обробник!
+        
+        box.remove();
+    },
+    reset() {
+        step = 0;
+        for (const key in scores) scores[key] = 0;
+        render();
+        logNodeValue();
+    },
+    answer(event) {
+        const idx = event.target.dataset.idx;
+        const points = questions[step].a[idx].p;
+        for (const key in points) {
+            scores[key] += points[key];
+        }
+        step++;
+        render();
+        logNodeValue();
+    }
+};
+
 //////////////////////////////////////////////////
 
 function render() {
     if (step === -1) {
         box.innerHTML = `
             <p>Привіт! Хочеш підібрати ідеальний софт для відеомонтажу?</p>
-            <button id="start">Так!</button>
-            <button id="close">Ні, дякую</button>
+            <button data-action="start">Так!</button>
+            <button data-action="close">Ні, дякую</button>
         `;
         return;
     };
@@ -52,7 +82,7 @@ function render() {
         const current = questions[step];
         let html = `<p>${current.q}</p>`;
         for (let i = 0; i < current.a.length; i++) {
-            html += `<button class="ans" data-idx="${i}">${current.a[i].t}</button>`;
+            html += `<button data-action="answer" data-idx="${i}">${current.a[i].t}</button>`;
         }
         box.innerHTML = html;
         return;
@@ -68,8 +98,8 @@ function render() {
     box.innerHTML = `
         <h3>Твій вердикт: ${results[winner][0]}</h3>
         <p>${results[winner][1]}</p>
-        <button id="reset">Пройти знову</button>
-        <button id="close">Закрити</button>
+        <button data-action="reset">Пройти знову</button>
+        <button data-action="close">Закрити</button>
     `;
 };
 
@@ -78,35 +108,25 @@ function logNodeValue() {
     if (target && target.firstChild) {
         console.log(target.firstChild.nodeValue);
     }
-}
+};
 
 function handleMouseClick(event) {
-    if (event.target.classList.contains('ans')) {
-            const idx = event.target.dataset.idx;
-            const points = questions[step].a[idx].p;
-            for (const key in points) {
-                scores[key] += points[key];
-            }
-            step++;
-            render();
-            logNodeValue();
-            return;
-    };
-    switch (event.target.id) {
-        case 'start':
-            step = 0;
-            render();
-            logNodeValue();
-            break;
-        case 'close':
-            box.remove();
-            break;
-        case 'reset':
-            step = 0;
-            for (const key in scores) scores[key] = 0;
-            render();
-            logNodeValue();
-            break;
+    const action = event.target.dataset.action;
+    
+    if (action && typeof menuActions[action] === 'function') {
+        menuActions[action](event);
+    }
+};
+
+const analyticsHandler = {
+    handleEvent(event) {
+        if (event.target.tagName === 'BUTTON') {
+            const action = event.target.dataset.action || 'без дії';
+            
+            console.warn(`[handleEvent] Подія відловлена на контейнері:`, event.currentTarget);
+            
+            console.log(`[АНАЛІТИКА] Клікнуто на: "${event.target.textContent}" -> Дія: "${action}"`);
+        }
     }
 };
 
@@ -114,7 +134,9 @@ function initDialogue() {
     box = document.getElementById('dialogue-box');
     if (!box) return;
 
+    box.addEventListener('click', analyticsHandler);
     box.addEventListener('click', handleMouseClick) 
+
     render();
     logNodeValue();
 };
