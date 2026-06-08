@@ -3,11 +3,13 @@ import { initDialogue } from './modules/dialogue.js';
 import { compareStrings } from './modules/compare.js';
 import { initListHighlight } from './modules/listInteraction.js';
 import { initHeadingHover } from './modules/hoverEffect.js';
+import { initDragAndDrop } from './modules/dragDrop.js';
 
 showDeveloperInfo("Гриценко", "Іван");
 initDialogue();
 initListHighlight();
 initHeadingHover();
+initDragAndDrop();
 
 window.compareStrings = compareStrings;
 
