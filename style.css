@@ -216,3 +216,9 @@ li.highlighted {
     background-color: #ffe066 !important;
     transition: background-color 0.2s ease;
 }
+
+.heading-highlight {
+    color: #ffc107;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}

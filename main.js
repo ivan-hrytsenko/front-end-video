@@ -2,10 +2,12 @@ import { showDeveloperInfo } from './modules/developer.js';
 import { initDialogue } from './modules/dialogue.js';
 import { compareStrings } from './modules/compare.js';
 import { initListHighlight } from './modules/listInteraction.js';
+import { initHeadingHover } from './modules/hoverEffect.js';
 
 showDeveloperInfo("Гриценко", "Іван");
 initDialogue();
 initListHighlight();
+initHeadingHover();
 
 window.compareStrings = compareStrings;
 
